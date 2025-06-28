@@ -45,18 +45,17 @@ class Player(CircleShape):
         if keys[pygame.K_s]:
             self.move(-dt)
         if keys[pygame.K_SPACE]:
-            self.shoot(dt)
+            self.shoot()
 
     def move(self, dt):
         forward_vector = Vector2(0, 1).rotate(self.rotation)
         self.position += forward_vector * PLAYER_SPEED * dt
 
-    def shoot(self, dt):
-        self.timer -= dt
-        if self.timer > 0:
+    def shoot(self):
+        current_time_ms = pygame.time.get_ticks()
+        if self.timer + PLAYER_SHOOT_CD > current_time_ms:
             return
-
         bullet = Shot(self.position.x, self.position.y)
         bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)
         bullet.velocity *= PLAYER_SHOOT_SPEED
-        self.timer = PLAYER_SHOOT_CD / 1000
+        self.timer = current_time_ms
