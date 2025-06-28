@@ -3,9 +3,10 @@ from pygame import Vector2
 
 from circleshape import CircleShape
 from constants import (
+    PLAYER_ACCELERATION_RATE,
+    PLAYER_ATTACK_CD,
+    PLAYER_PROJECTILE_SPEED,
     PLAYER_RADIUS,
-    PLAYER_SHOOT_CD,
-    PLAYER_SHOOT_SPEED,
     PLAYER_SPEED,
     PLAYER_TURN_SPEED,
 )
@@ -19,6 +20,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation: float = 0
         self.timer = 0
+        self.speed = 0
 
     def triangle(self) -> list[Vector2]:
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -53,9 +55,9 @@ class Player(CircleShape):
 
     def shoot(self):
         current_time_ms = pygame.time.get_ticks()
-        if self.timer + PLAYER_SHOOT_CD > current_time_ms:
+        if self.timer + PLAYER_ATTACK_CD > current_time_ms:
             return
         bullet = Shot(self.position.x, self.position.y)
         bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)
-        bullet.velocity *= PLAYER_SHOOT_SPEED
+        bullet.velocity *= PLAYER_PROJECTILE_SPEED
         self.timer = current_time_ms
