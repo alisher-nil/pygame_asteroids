@@ -5,8 +5,6 @@ import pygame
 from circleshape import CircleShape
 from constants import ASTEROID_ACCEL_RATE, ASTEROID_MIN_RADIUS
 
-ASTEROID_WIDTH = 2
-
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius) -> None:
